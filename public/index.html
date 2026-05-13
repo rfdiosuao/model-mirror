@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>模型网关照妖镜</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <section class="hero">
+        <div>
+          <p class="kicker">Local Model Gateway</p>
+          <h1>模型网关照妖镜</h1>
+          <p class="subcopy">本地 OpenAI-compatible 中转层，支持自定义模型名、API Key 池、流式转发、健康分路由和智商探针。</p>
+        </div>
+        <div class="endpoint-card">
+          <span>Base URL</span>
+          <strong>http://localhost:4173/v1</strong>
+          <small>Local API Key: <b id="localKey">local-anything</b></small>
+        </div>
+      </section>
+
+      <section class="grid">
+        <section class="panel">
+          <div class="panel-head">
+            <div>
+              <p class="kicker">Local Models</p>
+              <h2>本地模型名</h2>
+            </div>
+            <button class="ghost small" id="addModel" type="button">添加模型</button>
+          </div>
+          <div class="model-list" id="modelList"></div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-head">
+            <div>
+              <p class="kicker">Routing</p>
+              <h2>网关设置</h2>
+            </div>
+            <button class="primary small" id="saveConfig" type="button">保存配置</button>
+          </div>
+          <div class="settings">
+            <label>
+              <span>本地 API Key</span>
+              <input id="localApiKeyInput" value="local-anything" />
+            </label>
+            <label>
+              <span>路由策略</span>
+              <select id="strategyInput">
+                <option value="quality_first">质量优先</option>
+                <option value="balanced">平衡</option>
+                <option value="cost_first">权重/成本优先</option>
+              </select>
+            </label>
+            <label>
+              <span>最低健康分</span>
+              <input id="minHealthInput" type="number" min="0" max="100" value="45" />
+            </label>
+            <label>
+              <span>最低路由质量分</span>
+              <input id="minRouteQualityInput" type="number" min="0" max="100" value="55" />
+            </label>
+            <label>
+              <span>视觉强制模型</span>
+              <input id="visionModelInput" value="vision-chat" />
+            </label>
+          </div>
+          <div class="usage">
+            <h3>工具这样接</h3>
+            <pre><code>Base URL: http://localhost:4173/v1
+API Key:  local-anything
+Model:    smart-chat</code></pre>
+          </div>
+        </section>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <div>
+            <p class="kicker">Providers</p>
+            <h2>上游与 Key 池</h2>
+          </div>
+          <button class="ghost small" id="addProvider" type="button">添加上游</button>
+        </div>
+        <div class="provider-list" id="providerList"></div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <div>
+            <p class="kicker">Live</p>
+            <h2>最近路由记录</h2>
+          </div>
+          <button class="ghost small" id="refresh" type="button">刷新</button>
+        </div>
+        <div class="request-list" id="requestList"></div>
+      </section>
+    </main>
+
+    <template id="modelTemplate">
+      <article class="model-card">
+        <div class="provider-top">
+          <label class="toggle">
+            <input data-field="enabled" type="checkbox" />
+            <span>启用</span>
+          </label>
+          <strong data-role="title">Local Model</strong>
+          <button class="danger small" data-action="remove" type="button">删除</button>
+        </div>
+        <div class="provider-fields">
+          <label>
+            <span>本地模型名</span>
+            <input data-field="id" placeholder="smart-chat" />
+          </label>
+          <label>
+            <span>显示名称</span>
+            <input data-field="label" placeholder="高质量聊天" />
+          </label>
+          <label class="wide">
+            <span>说明</span>
+            <input data-field="description" placeholder="给自己看的用途说明" />
+          </label>
+        </div>
+        <div class="provider-metrics">
+          <span data-role="requests">请求 --</span>
+          <span data-role="success">成功 --</span>
+          <span data-role="tokens">Tokens --</span>
+          <span></span>
+        </div>
+        <div class="routes" data-role="routes"></div>
+        <button class="ghost small" data-action="addRoute" type="button">添加路由</button>
+      </article>
+    </template>
+
+    <template id="providerTemplate">
+      <article class="provider">
+        <div class="provider-top">
+          <label class="toggle">
+            <input data-field="enabled" type="checkbox" />
+            <span>启用</span>
+          </label>
+          <strong data-role="title">Provider</strong>
+          <button class="danger small" data-action="remove" type="button">删除</button>
+        </div>
+        <div class="provider-fields">
+          <label>
+            <span>ID</span>
+            <input data-field="id" />
+          </label>
+          <label>
+            <span>名称</span>
+            <input data-field="name" />
+          </label>
+          <label>
+            <span>Base URL</span>
+            <input data-field="baseUrl" placeholder="https://api.example.com" />
+          </label>
+          <label>
+            <span>权重</span>
+            <input data-field="weight" type="number" min="0" step="0.1" />
+          </label>
+          <label class="wide">
+            <span>API Keys，每行一个</span>
+            <textarea data-field="apiKeysText" rows="4" placeholder="sk-..."></textarea>
+          </label>
+        </div>
+        <div class="provider-metrics">
+          <span data-role="health">健康分 --</span>
+          <span data-role="latency">延迟 --</span>
+          <span data-role="keys">Key --</span>
+          <span data-role="tokens">Tokens --</span>
+          <span data-role="error"></span>
+        </div>
+        <div class="probe-row">
+          <input data-role="probeModel" placeholder="上游真实模型名，如 gpt-4.1" />
+          <select data-role="probeLevel">
+            <option value="quick">快速</option>
+            <option value="standard">标准</option>
+            <option value="deep">更狠</option>
+          </select>
+          <button class="ghost" data-action="probe" type="button">跑探针</button>
+        </div>
+        <div class="probe-result" data-role="probeResult"></div>
+      </article>
+    </template>
+
+    <script src="/app.js"></script>
+  </body>
+</html>

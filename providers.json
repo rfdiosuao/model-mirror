@@ -1,0 +1,286 @@
+{
+  "localApiKey": "local-anything",
+  "routing": {
+    "strategy": "quality_first",
+    "minHealthScore": 45,
+    "minRouteQualityScore": 55,
+    "visionModel": "vision-chat",
+    "cooldownSeconds": 90
+  },
+  "models": [
+    {
+      "id": "smart-chat",
+      "label": "Smart Chat",
+      "description": "General high-quality local model alias.",
+      "enabled": true,
+      "routes": [
+        {
+          "providerId": "heang",
+          "upstreamModel": "kimi-k2.5",
+          "weight": 1,
+          "enabled": true
+        },
+        {
+          "providerId": "heang",
+          "upstreamModel": "qwen3-max-2026-01-23",
+          "weight": 0.95,
+          "enabled": true
+        },
+        {
+          "providerId": "heang",
+          "upstreamModel": "qwen3.6-plus",
+          "weight": 0.35,
+          "enabled": true
+        },
+        {
+          "providerId": "okapi",
+          "upstreamModel": "gpt-5.4",
+          "weight": 0.45,
+          "enabled": true
+        }
+      ]
+    },
+    {
+      "id": "code-chat",
+      "label": "Code Chat",
+      "description": "Coding-oriented local model alias.",
+      "enabled": true,
+      "routes": [
+        {
+          "providerId": "heang",
+          "upstreamModel": "qwen3-coder-plus",
+          "weight": 1,
+          "enabled": true
+        },
+        {
+          "providerId": "heang",
+          "upstreamModel": "qwen3-coder-next",
+          "weight": 0.45,
+          "enabled": true
+        }
+      ]
+    },
+    {
+      "id": "reasoning-chat",
+      "label": "Reasoning Chat",
+      "description": "Reasoning and harder task local model alias.",
+      "enabled": true,
+      "routes": [
+        {
+          "providerId": "heang",
+          "upstreamModel": "kimi-k2.5",
+          "weight": 1,
+          "enabled": true
+        },
+        {
+          "providerId": "heang",
+          "upstreamModel": "qwen3-max-2026-01-23",
+          "weight": 0.9,
+          "enabled": true
+        },
+        {
+          "providerId": "heang",
+          "upstreamModel": "glm-4.7",
+          "weight": 0.4,
+          "enabled": true
+        },
+        {
+          "providerId": "okapi",
+          "upstreamModel": "gpt-5.4-xhigh",
+          "weight": 0.45,
+          "enabled": true
+        }
+      ]
+    },
+    {
+      "id": "fast-chat",
+      "label": "Fast Chat",
+      "description": "Fast/cheap local model alias.",
+      "enabled": true,
+      "routes": [
+        {
+          "providerId": "heang",
+          "upstreamModel": "glm-4-flash",
+          "weight": 1,
+          "enabled": true
+        },
+        {
+          "providerId": "heang",
+          "upstreamModel": "qwen3-coder-next",
+          "weight": 0.45,
+          "enabled": true
+        }
+      ]
+    },
+    {
+      "id": "cheap-chat",
+      "label": "Cheap Chat",
+      "description": "Lower-cost local model alias.",
+      "enabled": true,
+      "routes": [
+        {
+          "providerId": "heang",
+          "upstreamModel": "glm-4-flash",
+          "weight": 1,
+          "enabled": true
+        },
+        {
+          "providerId": "heang",
+          "upstreamModel": "MiniMax-M2.5",
+          "weight": 0.35,
+          "enabled": true
+        },
+        {
+          "providerId": "okapi",
+          "upstreamModel": "gpt-5.4-mini",
+          "weight": 0.25,
+          "enabled": true
+        }
+      ]
+    },
+    {
+      "id": "json-chat",
+      "label": "JSON Chat",
+      "description": "Strict JSON/tool compatible local model alias.",
+      "enabled": true,
+      "routes": [
+        {
+          "providerId": "heang",
+          "upstreamModel": "qwen3-max-2026-01-23",
+          "weight": 1,
+          "enabled": true
+        },
+        {
+          "providerId": "heang",
+          "upstreamModel": "qwen3-coder-plus",
+          "weight": 0.9,
+          "enabled": true
+        },
+        {
+          "providerId": "heang",
+          "upstreamModel": "kimi-k2.5",
+          "weight": 0.85,
+          "enabled": true
+        }
+      ]
+    },
+    {
+      "id": "vision-chat",
+      "label": "Vision Chat",
+      "description": "Forced local alias for image_url / multimodal requests.",
+      "enabled": true,
+      "routes": [
+        {
+          "providerId": "heang",
+          "upstreamModel": "kimi-k2.5",
+          "weight": 1,
+          "enabled": true
+        },
+        {
+          "providerId": "heang",
+          "upstreamModel": "qwen3.6-plus",
+          "weight": 0.85,
+          "enabled": true
+        }
+      ]
+    },
+    {
+      "id": "manual-lab",
+      "label": "Manual Lab",
+      "description": "Disabled lab routes for manual experiments only.",
+      "enabled": false,
+      "routes": [
+        {
+          "providerId": "heang",
+          "upstreamModel": "MiniMax-M2.7",
+          "weight": 0.1,
+          "enabled": false
+        },
+        {
+          "providerId": "heang",
+          "upstreamModel": "MiniMax-M2.7-highspeed",
+          "weight": 0.1,
+          "enabled": false
+        },
+        {
+          "providerId": "heang",
+          "upstreamModel": "tencent/hy3-preview-20260421",
+          "weight": 0.1,
+          "enabled": false
+        }
+      ]
+    },
+    {
+      "id": "okapi-mini",
+      "label": "200OK GPT 5.4 Mini",
+      "description": "Direct local alias for 200OK gpt-5.4-mini. Text/JSON ok, tool calling failed quick probe.",
+      "enabled": true,
+      "routes": [
+        {
+          "providerId": "okapi",
+          "upstreamModel": "gpt-5.4-mini",
+          "weight": 1,
+          "enabled": true
+        }
+      ]
+    },
+    {
+      "id": "okapi-chat",
+      "label": "200OK GPT 5.4",
+      "description": "Direct local alias for 200OK gpt-5.4. Text/JSON ok, tool calling failed quick probe.",
+      "enabled": true,
+      "routes": [
+        {
+          "providerId": "okapi",
+          "upstreamModel": "gpt-5.4",
+          "weight": 1,
+          "enabled": true
+        }
+      ]
+    },
+    {
+      "id": "okapi-xhigh",
+      "label": "200OK GPT 5.4 XHigh",
+      "description": "Direct local alias for 200OK gpt-5.4-xhigh. Text/JSON ok, tool calling failed quick probe.",
+      "enabled": true,
+      "routes": [
+        {
+          "providerId": "okapi",
+          "upstreamModel": "gpt-5.4-xhigh",
+          "weight": 1,
+          "enabled": true
+        }
+      ]
+    }
+  ],
+  "providers": [
+    {
+      "id": "heang",
+      "name": "Heang API",
+      "baseUrl": "https://api.heang.top",
+      "apiKeys": [
+        "sk-ACn9XX9Uw7AIKKbylwScs8A2Dj1tjtS1SDxAWIUWPNBpg4Ya"
+      ],
+      "weight": 1,
+      "enabled": true,
+      "headers": {},
+      "tags": [
+        "relay"
+      ]
+    },
+    {
+      "id": "okapi",
+      "name": "200OK API",
+      "baseUrl": "https://api.200okapi.com",
+      "apiKeys": [
+        "sk-iHnNvnmlKOxMxtT6878D1omPWKtliS7CGDbdk0yqTaoWxjfa"
+      ],
+      "weight": 1,
+      "enabled": true,
+      "headers": {},
+      "tags": [
+        "relay"
+      ]
+    }
+  ]
+}
