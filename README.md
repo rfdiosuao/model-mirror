@@ -1,3 +1,5 @@
+<p align="center"><strong>简体中文</strong> · <a href="README.en.md">English</a></p>
+
 # Model Mirror - 模型网关照妖镜
 
 > Local OpenAI-compatible API gateway with health-based routing, model aliasing, and AI probe testing.
