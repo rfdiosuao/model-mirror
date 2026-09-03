@@ -259,7 +259,7 @@
       "name": "Heang API",
       "baseUrl": "https://api.heang.top",
       "apiKeys": [
-        "sk-ACn9XX9Uw7AIKKbylwScs8A2Dj1tjtS1SDxAWIUWPNBpg4Ya"
+        "YOUR_API_KEY_HERE"
       ],
       "weight": 1,
       "enabled": true,
@@ -273,7 +273,7 @@
       "name": "200OK API",
       "baseUrl": "https://api.200okapi.com",
       "apiKeys": [
-        "sk-iHnNvnmlKOxMxtT6878D1omPWKtliS7CGDbdk0yqTaoWxjfa"
+        "YOUR_API_KEY_HERE"
       ],
       "weight": 1,
       "enabled": true,
